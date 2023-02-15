@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   DesktopOutlined,
   FileOutlined,
@@ -7,9 +6,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, Menu } from "antd";
+import React from "react";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -27,6 +27,12 @@ function getItem(
   } as MenuItem;
 }
 
+interface ISidebar {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  menuKey: string;
+}
+
 const items: MenuItem[] = [
   getItem("Option 1", "1", <PieChartOutlined />),
   getItem("Option 2", "2", <DesktopOutlined />),
@@ -42,18 +48,14 @@ const items: MenuItem[] = [
   getItem("Files", "9", <FileOutlined />),
 ];
 
-const HomePage: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
+const LayoutSider = ({ collapsed, setCollapsed, menuKey }: ISidebar) => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
         collapsible
+        trigger={null}
         collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
+        onCollapse={(value) => setCollapsed(!value)}
       >
         <div
           style={{
@@ -64,34 +66,14 @@ const HomePage: React.FC = () => {
         />
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
           mode="inline"
           items={items}
+          defaultSelectedKeys={[menuKey]}
+          selectedKeys={[menuKey]}
         />
       </Sider>
-      <Layout className="site-layout">
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "0 16px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-            }}
-          >
-            Bill is a cat.
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
-      </Layout>
     </Layout>
   );
 };
 
-export default HomePage;
+export default LayoutSider;
