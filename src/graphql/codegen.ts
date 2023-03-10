@@ -41,6 +41,12 @@ const config: CodegenConfig = {
     },
     "src/graphql/schema.json": {
       plugins: ["urql-introspection"],
+      config: {
+        includeScalars: true,
+        includeEnums: true,
+        includeInputs: true,
+        includeDirectives: true,
+      },
     },
   },
 };
