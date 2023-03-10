@@ -8,7 +8,7 @@ module.exports = async () => {
   const introspectionQuery = getIntrospectionQuery();
 
   if (!API_URL) {
-    throw new Error("environment variable `API_URL` is not defined");
+    throw new Error("Environment variable `API_URL` is not defined");
   }
 
   const response = await fetch(API_URL, {

@@ -1,9 +1,18 @@
+import * as dotenv from "dotenv";
 import { CodegenConfig } from "@graphql-codegen/cli";
+
+dotenv.config({ path: ".env.local" });
+
+const API_URL = process.env.VITE_API_URL;
+
+if (!API_URL) {
+  throw new Error("Environment variable `API_URL` is not defined");
+}
 
 const config: CodegenConfig = {
   schema: [
     {
-      "https://beta.pokeapi.co/graphql/v1beta": {
+      [API_URL]: {
         loader: "./src/graphql/codegen-loader.cjs",
       },
     },
